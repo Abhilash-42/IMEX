@@ -42,7 +42,7 @@ export function Dashboard() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-300 bg-clip-text text-transparent">
-              chainSol AI
+              IMEX
             </h1>
             <p className="text-gray-400 mt-1">Real-Time Supply Chain Intelligence</p>
           </div>
