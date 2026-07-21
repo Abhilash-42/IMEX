@@ -74,19 +74,16 @@ async def get_events(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     search: Optional[str] = None,
+    country: Optional[str] = None,
     event_type: Optional[str] = None,
     min_severity: Optional[float] = Query(None, ge=0, le=100),
     is_active: Optional[bool] = None,
-    country: Optional[str] = None,
     start_date_from: Optional[datetime] = None,
     start_date_to: Optional[datetime] = None,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    db: Session = Depends(get_db)
 ):
-    """Get all events with filtering and pagination"""
     query = db.query(Event)
-    
-    # Apply filters
+
     if search:
         query = query.filter(
             or_(
@@ -95,33 +92,32 @@ async def get_events(
                 Event.location.ilike(f"%{search}%")
             )
         )
-    
+
     if event_type:
         query = query.filter(Event.event_type == event_type)
-    
+
     if min_severity is not None:
         query = query.filter(Event.severity >= min_severity)
-    
+
     if is_active is not None:
         query = query.filter(Event.is_active == is_active)
-    
+
     if country:
         query = query.filter(Event.country == country)
-    
+
     if start_date_from:
         query = query.filter(Event.start_date >= start_date_from)
-    
+
     if start_date_to:
         query = query.filter(Event.start_date <= start_date_to)
-    
+
     total = query.count()
     events = query.order_by(Event.created_at.desc()).offset(skip).limit(limit).all()
-    
+
     return {
         "total": total,
         "events": events
     }
-
 @router.get("/{event_id}", response_model=EventDetailResponse)
 async def get_event(
     event_id: int,
