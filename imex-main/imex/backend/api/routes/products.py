@@ -299,8 +299,8 @@ async def get_product_stats(
     # Get top business units
     business_units = db.query(
         Product.business_unit, 
-        db.func.count(Product.id).label('count'),
-        db.func.sum(Product.revenue_per_unit * Product.monthly_sales).label('revenue')
+           func.count(Product.id).label('count'),
+           func.sum(Product.revenue_per_unit * Product.monthly_sales).label('revenue')
     ).filter(Product.business_unit.isnot(None))\
      .group_by(Product.business_unit)\
      .order_by(db.desc('revenue'))\
