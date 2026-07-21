@@ -45,7 +45,7 @@ app = FastAPI(
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://chainsol-ai.vercel.app"],
+    allow_origins=["http://localhost:3000", "https://chainsol-ai.vercel.app","https://imex-frontend.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -67,4 +67,4 @@ app.include_router(upload.router, prefix="/api/upload", tags=["Uploads"])
 
 @app.get("/")
 async def root():
-    return {"message": "chainSol AI API", "version": "1.0.0"}
+    return {"message": "IMEX API", "version": "1.0.0"}
