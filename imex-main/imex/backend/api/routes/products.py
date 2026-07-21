@@ -58,15 +58,14 @@ async def get_products(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     search: Optional[str] = None,
-    country: Optional[str] = None,
-    min_criticality: Optional[float] = Query(None, ge=0, le=100),
-    is_active: Optional[bool] = None,
+    business_unit: Optional[str] = None,
+    min_revenue: Optional[float] = Query(None, ge=0),
     db: Session = Depends(get_db)
 ):
     """Get all products with filtering and pagination"""
+
     query = db.query(Product)
-    
-    # Apply filters
+
     if search:
         query = query.filter(
             or_(
@@ -75,16 +74,26 @@ async def get_products(
                 Product.business_unit.ilike(f"%{search}%")
             )
         )
-    
+
     if business_unit:
-        query = query.filter(Product.business_unit == business_unit)
-    
+        query = query.filter(
+            Product.business_unit == business_unit
+        )
+
     if min_revenue is not None:
-        query = query.filter(Product.revenue_per_unit >= min_revenue)
-    
+        query = query.filter(
+            Product.revenue_per_unit >= min_revenue
+        )
+
     total = query.count()
-    products = query.offset(skip).limit(limit).all()
-    
+
+    products = (
+        query
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
     return {
         "total": total,
         "products": products
