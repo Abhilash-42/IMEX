@@ -62,15 +62,10 @@ async def get_suppliers(
     country: Optional[str] = None,
     min_criticality: Optional[float] = Query(None, ge=0, le=100),
     is_active: Optional[bool] = None,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    db: Session = Depends(get_db)
 ):
     """Get all suppliers with filtering and pagination"""
     query = db.query(Supplier)
-    
-    # Apply company filter for non-admin users
-    if current_user.role != "admin" and current_user.company_id:
-        query = query.filter(Supplier.company_id == current_user.company_id)
     
     # Apply filters
     if search:
