@@ -53,22 +53,18 @@ class ProductListResponse(BaseModel):
     total: int
     products: List[ProductResponse]
 
-@router.get("/", response_model=ProductListResponse)
-async def get_products(
+@router.get("/", response_model=SupplierListResponse)
+async def get_suppliers(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     search: Optional[str] = None,
-    business_unit: Optional[str] = None,
-    min_revenue: Optional[float] = None,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    country: Optional[str] = None,
+    min_criticality: Optional[float] = Query(None, ge=0, le=100),
+    is_active: Optional[bool] = None,
+    db: Session = Depends(get_db)
 ):
     """Get all products with filtering and pagination"""
     query = db.query(Product)
-    
-    # Apply company filter for non-admin users
-    if current_user.role != "admin" and current_user.company_id:
-        query = query.filter(Product.company_id == current_user.company_id)
     
     # Apply filters
     if search:
