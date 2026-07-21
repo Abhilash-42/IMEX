@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'chainSol AI - Supply Chain Intelligence',
+  title: 'IMEX - Supply Chain Intelligence',
   description: 'Real-time supply chain disruption intelligence platform',
 }
 
@@ -29,7 +29,7 @@ export default function RootLayout({
               <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-8">
                   <Link href="/" className="font-bold text-lg bg-gradient-to-r from-orange-500 to-orange-300 bg-clip-text text-transparent">
-                    chainSol AI
+                    IMEX
                   </Link>
                   <nav className="flex items-center gap-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     <Link href="/" className="hover:text-white transition-colors">
