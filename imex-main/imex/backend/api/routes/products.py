@@ -54,7 +54,7 @@ class ProductListResponse(BaseModel):
     products: List[ProductResponse]
 
 @router.get("/", response_model=ProductListResponse)
-async def get_product(
+async def get_products(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     search: Optional[str] = None,
